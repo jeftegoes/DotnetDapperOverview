@@ -11,7 +11,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
-builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryEF>();
+// builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryEF>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDP>();
 
 var app = builder.Build();
 
