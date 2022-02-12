@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExampleDapper.Repository
 {
-    public class CompanyRepositoryEF : ICompanyRepository
+    public class CompanyRepositoryEntityFramework : ICompanyRepository
     {
         private readonly ApplicationDbContext _context;
         
-        public CompanyRepositoryEF(ApplicationDbContext context)
+        public CompanyRepositoryEntityFramework(ApplicationDbContext context)
         {
             _context = context;
         }

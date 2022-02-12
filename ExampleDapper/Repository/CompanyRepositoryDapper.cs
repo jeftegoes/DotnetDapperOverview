@@ -7,13 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExampleDapper.Repository
 {
-    public class CompanyRepositoryDP : ICompanyRepository
+    public class CompanyRepositoryDapper : ICompanyRepository
     {
-        private IDbConnection db;
+        private IDbConnection connection;
 
-        public CompanyRepositoryDP(IConfiguration configuration)
+        public CompanyRepositoryDapper(IConfiguration configuration)
         {
-            this.db = new SqlConnection(configuration.GetConnectionString("Default"));
+            this.connection = new SqlConnection(configuration.GetConnectionString("Default"));
         }
 
         public async Task<List<Company>> GetAll()
@@ -23,7 +23,7 @@ namespace ExampleDapper.Repository
                         FROM
                             Company";
 
-            return (await db.QueryAsync<Company>(sql)).ToList();
+            return (await connection.QueryAsync<Company>(sql)).ToList();
         }
 
         public async Task<Company> Find(int? id)
@@ -35,7 +35,7 @@ namespace ExampleDapper.Repository
                         WHERE
                             CompanyId = @CompanyId";
 
-            return (await db.QueryAsync<Company>(sql, new { CompanyId = id })).FirstOrDefault();
+            return (await connection.QueryAsync<Company>(sql, new { CompanyId = id })).FirstOrDefault();
         }
 
         public async Task<Company> Add(Company company)
@@ -63,7 +63,7 @@ namespace ExampleDapper.Repository
             // };
 
             // return await db.ExecuteScalarAsync<Company>(sql, param);
-            return await db.ExecuteScalarAsync<Company>(sql, company);
+            return await connection.ExecuteScalarAsync<Company>(sql, company);
         }
 
         public async Task<Company> Update(Company company)
@@ -79,14 +79,14 @@ namespace ExampleDapper.Repository
                         WHERE
                             CompanyId = @CompanyId";
 
-            return await db.ExecuteScalarAsync<Company>(sql, company);;
+            return await connection.ExecuteScalarAsync<Company>(sql, company);;
         }
 
         public async Task Remove(int? id)
         {
             var sql = "DELETE FROM Company WHERE CompanyId = @CompanyId";
 
-            await db.QueryAsync(sql, new { CompanyId = id });
+            await connection.QueryAsync(sql, new { CompanyId = id });
         }
 
         public async Task<bool> CompanyExists(int? id)

@@ -8,5 +8,6 @@ namespace ExampleDapper.Models
         public string City { get; set; }
         public string State { get; set; }
         public string PostalCode { get; set; }
+        public ICollection<Employee> Employee { get; set; }
     }
 }

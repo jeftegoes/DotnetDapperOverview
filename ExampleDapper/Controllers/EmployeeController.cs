@@ -11,64 +11,57 @@ using ExampleDapper.Repository;
 
 namespace ExampleDapper.Controllers
 {
-    public class CompanyController : Controller
+    public class EmployeeController : Controller
     {
         private readonly ICompanyRepository _companyRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public CompanyController(ICompanyRepository companyRepository)
+        public EmployeeController(ICompanyRepository companyRepository,
+                                  IEmployeeRepository employeeRepository)
         {
             _companyRepository = companyRepository;
+            _employeeRepository = employeeRepository;
         }
 
-        // GET: Company
+        // GET: Employee
         public async Task<IActionResult> Index()
         {
-            return View(await _companyRepository.GetAll());
+            return View(await _employeeRepository.GetAll());
         }
 
-        // GET: Company/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Employee/Create
+        public async Task<IActionResult> Create()
         {
-            if (id == null)
+            var companyList = (await _companyRepository.GetAll()).Select(c => new SelectListItem
             {
-                return NotFound();
-            }
+                Text = c.Name,
+                Value = c.CompanyId.ToString()
+            });
 
-            var company = await _companyRepository.Find(id);
+            ViewBag.CompanyList = companyList;
 
-            if (company == null)
-            {
-                return NotFound();
-            }
-
-            return View(company);
-        }
-
-        // GET: Company/Create
-        public IActionResult Create()
-        {
             return View();
         }
 
-        // POST: Company/Create
+        // POST: Employee/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CompanyId,Name,Address,City,State,PostalCode")] Company company)
+        public async Task<IActionResult> Create(Employee employee)
         {
-            ModelState.Remove("Employee");
+            ModelState.Remove("Company");
 
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            await _companyRepository.Add(company);
+            await _employeeRepository.Add(employee);
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Company/Edit/5
+        // GET: Employee/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,26 +69,34 @@ namespace ExampleDapper.Controllers
                 return NotFound();
             }
 
-            var company = await _companyRepository.Find(id);
+            var employee = await _employeeRepository.Find(id);
 
-            if (company == null)
+            var companyList = (await _companyRepository.GetAll()).Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.CompanyId.ToString()
+            });
+
+            ViewBag.CompanyList = companyList;
+
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(company);
+            return View(employee);
         }
 
-        // POST: Company/Edit/5
+        // POST: Employee/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("CompanyId,Name,Address,City,State,PostalCode")] Company company)
+        public async Task<IActionResult> Edit(Employee employee)
         {
-            ModelState.Remove("Employee");
+            ModelState.Remove("Company");
 
-            if (company == null)
+            if (employee == null)
             {
                 return NotFound();
             }
@@ -107,7 +108,7 @@ namespace ExampleDapper.Controllers
 
             try
             {
-                await _companyRepository.Update(company);
+                await _employeeRepository.Update(employee);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -117,7 +118,7 @@ namespace ExampleDapper.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Company/Delete/5
+        // GET: Employee/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,22 +126,22 @@ namespace ExampleDapper.Controllers
                 return NotFound();
             }
 
-            var company = await _companyRepository.Find(id);
+            var employee = await _employeeRepository.Find(id);
 
-            if (company == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(company);
+            return View(employee);
         }
 
-        // POST: Company/Delete/5
+        // POST: Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _companyRepository.Remove(id);
+            await _employeeRepository.Remove(id);
 
             return RedirectToAction(nameof(Index));
         }
