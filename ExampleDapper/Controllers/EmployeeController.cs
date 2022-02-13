@@ -15,18 +15,27 @@ namespace ExampleDapper.Controllers
     {
         private readonly ICompanyRepository _companyRepository;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly ICustomRepository _customRepository;
 
         public EmployeeController(ICompanyRepository companyRepository,
-                                  IEmployeeRepository employeeRepository)
+                                  IEmployeeRepository employeeRepository,
+                                  ICustomRepository customRepository)
         {
             _companyRepository = companyRepository;
             _employeeRepository = employeeRepository;
+            _customRepository = customRepository;
         }
 
         // GET: Employee
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int companyId = 0)
         {
-            return View(await _employeeRepository.GetAll());
+            // var employees = await _employeeRepository.GetAll();
+
+            // foreach (var employee in employees)
+            // {
+            //     employee.Company = await _companyRepository.Find(employee.CompanyId);
+            // };
+            return View(await _customRepository.GetEmployeeWithCompany(companyId));
         }
 
         // GET: Employee/Create
@@ -114,7 +123,7 @@ namespace ExampleDapper.Controllers
             {
                 return NotFound();
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 

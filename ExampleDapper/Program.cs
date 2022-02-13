@@ -10,9 +10,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
-
-// builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryEF>();
-builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDapperStoredProcedure>();
+// builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryEntityFramework>();
+// builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDapper>();
+// builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDapperStoredProcedure>();
+builder.Services.AddScoped<ICustomRepository, CustomRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDapperContib>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepositoryDapper>();
 
 var app = builder.Build();
