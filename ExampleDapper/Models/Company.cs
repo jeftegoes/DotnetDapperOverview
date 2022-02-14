@@ -14,6 +14,6 @@ namespace ExampleDapper.Models
         public string PostalCode { get; set; }
 
         [Write(false)]
-        public ICollection<Employee> Employee { get; set; }
+        public List<Employee> Employee { get; set; } = new List<Employee>();
     }
 }

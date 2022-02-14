@@ -14,9 +14,11 @@ namespace ExampleDapper.Controllers
     public class CompanyController : Controller
     {
         private readonly ICompanyRepository _companyRepository;
+        private readonly ICustomRepository _customRepository;
 
-        public CompanyController(ICompanyRepository companyRepository)
+        public CompanyController(ICompanyRepository companyRepository, ICustomRepository customRepository)
         {
+            _customRepository = customRepository;
             _companyRepository = companyRepository;
         }
 
@@ -34,7 +36,7 @@ namespace ExampleDapper.Controllers
                 return NotFound();
             }
 
-            var company = await _companyRepository.Find(id);
+            var company = await _customRepository.GetCompanyWithEmployees(id.GetValueOrDefault());
 
             if (company == null)
             {
@@ -113,7 +115,7 @@ namespace ExampleDapper.Controllers
             {
                 return NotFound();
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExampleDapper.Repository
 {
-    public class CompanyRepositoryDapperContib : ICompanyRepository
+    public class CompanyRepositoryDapperContrib : ICompanyRepository
     {
         private IDbConnection connection;
 
-        public CompanyRepositoryDapperContib(IConfiguration configuration)
+        public CompanyRepositoryDapperContrib(IConfiguration configuration)
         {
             this.connection = new SqlConnection(configuration.GetConnectionString("Default"));
         }

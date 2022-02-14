@@ -14,7 +14,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDapper>();
 // builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDapperStoredProcedure>();
 builder.Services.AddScoped<ICustomRepository, CustomRepository>();
-builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDapperContib>();
+builder.Services.AddScoped<IBaseRepository, BaseRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepositoryDapperContrib>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepositoryDapper>();
 
 var app = builder.Build();
